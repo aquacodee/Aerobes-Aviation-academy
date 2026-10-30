@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: aeronex
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Daud12345
+    volumes: [aeronex_pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U postgres -d aeronex"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  api:
+    build: ./backend
+    env_file: ./backend/.env
+    depends_on:
+      db: {condition: service_healthy}
+    ports: ["5001:5000"]
+    restart: unless-stopped
+  web:
+    image: node:22-alpine
+    working_dir: /app
+    volumes: ["./frontend:/app"]
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    ports: ["5173:5173"]
+    environment: {VITE_API_URL: "http://localhost:5001/api/v1"}
+    depends_on: [api]
+volumes:
+  aeronex_pgdata:
