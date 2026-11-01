@@ -3,8 +3,13 @@ backend/.env
 __pycache__/
 *.py[cod]
 .venv/
+venv/
+.env
+.env.local
+.env.production.local
 node_modules/
 dist/
 *.db
 uploads/
 .pytest_cache/
+.env.production
