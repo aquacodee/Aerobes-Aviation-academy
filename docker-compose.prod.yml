@@ -19,7 +19,7 @@ services:
       context: ./backend
     restart: unless-stopped
     env_file:
-      - .env.production
+      - .env
     depends_on:
       db:
         condition: service_healthy
