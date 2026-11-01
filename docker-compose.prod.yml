@@ -3,7 +3,7 @@ services:
     image: postgres:16-alpine
     restart: unless-stopped
     env_file:
-      - .env.production
+      - .env
     volumes:
       - aeronex_prod_pgdata:/var/lib/postgresql/data
     healthcheck:
